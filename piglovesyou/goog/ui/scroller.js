@@ -260,7 +260,7 @@ goog.ui.Scroller.prototype.update_ = function () {
 
   // XXX: Because the method accepts only one argument,
   //        we calc isOrientEnabled again inside of this method.
-  this.setEnabled(venable || henable);
+  this.setEnabled(this.isEnabled() && (venable || henable));
 };
 
 
@@ -307,12 +307,12 @@ goog.ui.Scroller.prototype.setEnabled = function (enable) {
   var henable = this.isOrientEnabled(goog.ui.Scroller.ORIENTATION.HORIZONTAL);
 
   if (this.supportVertical()) {
-    this.vslider_.setEnabled(venable);
-    this.vslider_.setVisible(venable);
+    this.vslider_.setEnabled(venable && enable);
+    this.vslider_.setVisible(venable && enable);
   }
   if (this.supportHorizontal()) {
-    this.hslider_.setEnabled(henable);
-    this.hslider_.setVisible(henable);
+    this.hslider_.setEnabled(henable && enable);
+    this.hslider_.setVisible(henable && enable);
   }
 };
 
