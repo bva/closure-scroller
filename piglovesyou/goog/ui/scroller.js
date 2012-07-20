@@ -7,15 +7,17 @@ goog.require('goog.ui.Slider');
 
 /**
  * @constructor
- * @param {?goog.ui.Scroller.ORIENTATION=} 
+ * @param {?goog.ui.Scroller.ORIENTATION=} opt_orient Optional orientation.
+ * @param {goog.dom.DomHelper=} opt_domHelper Optional DOM helper.
  */
-goog.ui.Scroller = function (opt_orient, opt_domHelper) {
+goog.ui.Scroller = function(opt_orient, opt_domHelper) {
   goog.base(this, '', opt_domHelper);
 
   /**
    * @type {goog.ui.Scroller.ORIENTATION}
+   * @private
    */
-  this.orient_ = 
+  this.orient_ =
     opt_orient & goog.ui.Scroller.ORIENTATION.HORIZONTAL ||
     opt_orient & goog.ui.Scroller.ORIENTATION.BOTH ?
     opt_orient : goog.ui.Scroller.ORIENTATION.VERTICAL; /* default */
@@ -45,12 +47,14 @@ goog.ui.Scroller.ORIENTATION = {
 
 /**
  * @type {Number}
+ * @private
  */
 goog.ui.Scroller.prototype.scrollDistance_ = 15;
 
 
 /**
  * @type {Number}
+ * @private
  */
 goog.ui.Scroller.prototype.minThumbLength_ = 15;
 
@@ -105,24 +109,28 @@ goog.ui.Scroller.prototype.width_;
 
 /**
  * @type {String}
+ * @private
  */
 goog.ui.Scroller.prototype.CssBase_ = 'goog-scroller';
 
 
 /**
  * @type {boolean}
+ * @private
  */
 goog.ui.Scroller.prototype.canChangeScroll_ = true;
 
 
 /**
  * @type {Number}
+ * @private
  */
 goog.ui.Scroller.prototype.vlastValue_ = 0;
 
 
 /**
  * @type {Number}
+ * @private
  */
 goog.ui.Scroller.prototype.hlastValue_ = 0;
 
@@ -130,7 +138,7 @@ goog.ui.Scroller.prototype.hlastValue_ = 0;
 /**
  * @return {boolean}
  */
-goog.ui.Scroller.prototype.supportVertical = function () {
+goog.ui.Scroller.prototype.supportVertical = function() {
   return this.orient_ & goog.ui.Scroller.ORIENTATION.VERTICAL ||
     this.orient_ & goog.ui.Scroller.ORIENTATION.BOTH;
 };
@@ -139,7 +147,7 @@ goog.ui.Scroller.prototype.supportVertical = function () {
 /**
  * @return {boolean}
  */
-goog.ui.Scroller.prototype.supportHorizontal = function () {
+goog.ui.Scroller.prototype.supportHorizontal = function() {
   return this.orient_ & goog.ui.Scroller.ORIENTATION.HORIZONTAL ||
     this.orient_ & goog.ui.Scroller.ORIENTATION.BOTH;
 };
@@ -154,7 +162,7 @@ goog.ui.Scroller.prototype.update = function() {
 
 /**
  * @override
- * @return {Element}
+ * @return {Element} Content Element.
  */
 goog.ui.Scroller.prototype.getContentElement = function() {
   return this.containerElm_;
@@ -164,7 +172,7 @@ goog.ui.Scroller.prototype.getContentElement = function() {
 /**
  * @private
  */
-goog.ui.Scroller.prototype.setupSlider_ = function () {
+goog.ui.Scroller.prototype.setupSlider_ = function() {
   if (this.supportVertical()) {
     this.vslider_ = this.createSlider_(goog.ui.SliderBase.Orientation.VERTICAL);
   }
@@ -217,7 +225,7 @@ goog.ui.Scroller.prototype.canDecorate = function(element) {
 /**
  * @return {Number}
  */
-goog.ui.Scroller.prototype.getHeight = function () {
+goog.ui.Scroller.prototype.getHeight = function() {
   return this.height_;
 };
 
@@ -225,23 +233,24 @@ goog.ui.Scroller.prototype.getHeight = function () {
 /**
  * @return {Number}
  */
-goog.ui.Scroller.prototype.getWidth = function () {
+goog.ui.Scroller.prototype.getWidth = function() {
   return this.width_;
 };
-  
+
 
 /**
  */
-goog.ui.Scroller.prototype.update_ = function () {
-  var container         = this.containerElm_;
+goog.ui.Scroller.prototype.update_ = function() {
+  var container = this.containerElm_;
+
   if (this.supportVertical()) {
-    var height             = this.height_           = container.offsetHeight;
-    var scrollHeight       = this.scrollHeight_     = this.getScrollHeight();
+    var height = this.height_ = container.offsetHeight;
+    var scrollHeight = this.scrollHeight_ = this.getScrollHeight();
     this.vscrollableRange_ = scrollHeight - height;
   }
   if (this.supportHorizontal()) {
-    var width              = this.width_          = container.offsetWidth;
-    var scrollWidth        = this.scrollWidth_    = this.getScrollWidth();
+    var width = this.width_ = container.offsetWidth;
+    var scrollWidth = this.scrollWidth_ = this.getScrollWidth();
     this.hscrollableRange_ = scrollWidth - width;
   }
   var venable = this.isOrientEnabled(goog.ui.Scroller.ORIENTATION.VERTICAL);
@@ -268,7 +277,7 @@ goog.ui.Scroller.prototype.update_ = function () {
  * @param {goog.ui.Scroller.ORIENTATION} orient
  * @return {boolean}
  */
-goog.ui.Scroller.prototype.isOrientEnabled = function (orient) {
+goog.ui.Scroller.prototype.isOrientEnabled = function(orient) {
   var support, scrollableRange;
   if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL) {
     return this.supportVertical() && this.vscrollableRange_ > 0;
@@ -282,7 +291,7 @@ goog.ui.Scroller.prototype.isOrientEnabled = function (orient) {
 /**
  * @protected
  */
-goog.ui.Scroller.prototype.getScrollHeight = function () {
+goog.ui.Scroller.prototype.getScrollHeight = function() {
   return this.containerElm_.scrollHeight;
 };
 
@@ -290,7 +299,7 @@ goog.ui.Scroller.prototype.getScrollHeight = function () {
 /**
  * @protected
  */
-goog.ui.Scroller.prototype.getScrollWidth = function () {
+goog.ui.Scroller.prototype.getScrollWidth = function() {
   return this.containerElm_.scrollWidth;
 };
 
@@ -299,7 +308,7 @@ goog.ui.Scroller.prototype.getScrollWidth = function () {
  * @override
  * @param {boolean} enable
  */
-goog.ui.Scroller.prototype.setEnabled = function (enable) {
+goog.ui.Scroller.prototype.setEnabled = function(enable) {
   goog.base(this, 'setEnabled', enable);
   this.setMouseWheelEnable_(enable);
 
@@ -327,7 +336,7 @@ goog.ui.Scroller.prototype.mouseWheelHandler_;
  * Switch mouse wheel event listening.
  * @param {boolean} enable
  */
-goog.ui.Scroller.prototype.setMouseWheelEnable_ = function (enable) {
+goog.ui.Scroller.prototype.setMouseWheelEnable_ = function(enable) {
   if (enable) {
     if (!this.mouseWheelHandler_) {
       this.mouseWheelHandler_ = new goog.events.MouseWheelHandler(
@@ -358,8 +367,9 @@ goog.ui.Scroller.prototype.handleMouseWheel_ = function (e) {
 
 /**
  * @param {goog.ui.Scroller.ORIENTATION} orient
+ * @param {boolean} isOppositEnable
  */
-goog.ui.Scroller.prototype.adjustThumbSize_ = function (orient, isOppositEnable) {
+goog.ui.Scroller.prototype.adjustThumbSize_ = function(orient, isOppositEnable) {
   var len, rate, setSize, slider;
   if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL) {
     len = this.height_;
@@ -382,7 +392,7 @@ goog.ui.Scroller.prototype.adjustThumbSize_ = function (orient, isOppositEnable)
  * @param {?goog.ui.Scroller.ORIENTATION=} opt_orient
  * @return {Number}
  */
-goog.ui.Scroller.prototype.getScrollableRange = function (opt_orient) {
+goog.ui.Scroller.prototype.getScrollableRange = function(opt_orient) {
   if (opt_orient & goog.ui.Scroller.ORIENTATION.HORIZONTAL) return this.hscrollableRange_;
   return this.vscrollableRange_;
 };
@@ -391,7 +401,7 @@ goog.ui.Scroller.prototype.getScrollableRange = function (opt_orient) {
 /**
  * @param {goog.ui.Scroller.ORIENTATION} orient
  */
-goog.ui.Scroller.prototype.adjustUnitIncrement_ = function (orient) {
+goog.ui.Scroller.prototype.adjustUnitIncrement_ = function(orient) {
   var scrollableRange, slider;
   if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL) {
     scrollableRange = this.vscrollableRange_;
@@ -400,15 +410,15 @@ goog.ui.Scroller.prototype.adjustUnitIncrement_ = function (orient) {
     scrollableRange = this.hscrollableRange_;
     slider = this.hslider_;
   }
-  var valueRange = this.scrollDistance_ / scrollableRange * slider.getMaximum(); 
+  var valueRange = this.scrollDistance_ / scrollableRange * slider.getMaximum();
   slider.setUnitIncrement(valueRange);
 };
 
 
 /**
  */
-goog.ui.Scroller.prototype.setZero = function () {
-  if (this.supportVertical())   this.vslider_.setValueFromStart(0);
+goog.ui.Scroller.prototype.setZero = function() {
+  if (this.supportVertical()) this.vslider_.setValueFromStart(0);
   if (this.supportHorizontal()) this.hslider_.setValueFromStart(0);
 };
 
@@ -417,7 +427,7 @@ goog.ui.Scroller.prototype.setZero = function () {
  * @param {?goog.ui.Scroller.ORIENTATION=} opt_orient
  * @return {goog.ui.Scroller.Slider}
  */
-goog.ui.Scroller.prototype.getSlider = function (opt_orient) {
+goog.ui.Scroller.prototype.getSlider = function(opt_orient) {
   if (opt_orient & goog.ui.Scroller.ORIENTATION.HORIZONTAL) return this.hslider_;
   return this.vslider_;
 };
@@ -428,23 +438,25 @@ goog.ui.Scroller.prototype.getSlider = function (opt_orient) {
  * @protected
  */
 goog.ui.Scroller.prototype.adjustScrollTop = function (orient) {
-  if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL)         this.containerElm_.scrollTop =  this.vscrollableRange_ * this.vslider_.getRate();
-  else if (orient == goog.ui.Scroller.ORIENTATION.HORIZONTAL) this.containerElm_.scrollLeft = this.hscrollableRange_ * this.hslider_.getRate();
+  if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL)
+    this.containerElm_.scrollTop = this.vscrollableRange_ * this.vslider_.getRate();
+  else if (orient == goog.ui.Scroller.ORIENTATION.HORIZONTAL)
+    this.containerElm_.scrollLeft = this.hscrollableRange_ * this.hslider_.getRate();
 };
 
 
 /**
  * @param {goog.ui.Scroller.ORIENTATION} orient
  */
-goog.ui.Scroller.prototype.adjustValueByScroll_ = function (orient) {
+goog.ui.Scroller.prototype.adjustValueByScroll_ = function(orient) {
   var currScroll, scrollableRange, slider;
   if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL) {
     currScroll = this.containerElm_.scrollTop;
-    scrollableRange = this.vscrollableRange_
+    scrollableRange = this.vscrollableRange_;
     slider = this.vslider_;
   } else {
     currScroll = this.containerElm_.scrollLeft;
-    scrollableRange = this.hscrollableRange_
+    scrollableRange = this.hscrollableRange_;
     slider = this.hslider_;
   }
   var currRate = currScroll / scrollableRange;
@@ -460,8 +472,10 @@ goog.ui.Scroller.prototype.adjustValueByScroll_ = function (orient) {
  */
 goog.ui.Scroller.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-  if (this.supportVertical())   this.getHandler().listen(this.vslider_, goog.ui.Component.EventType.CHANGE, this.handleChange_);
-  if (this.supportHorizontal()) this.getHandler().listen(this.hslider_, goog.ui.Component.EventType.CHANGE, this.handleChange_);
+  if (this.supportVertical())
+    this.getHandler().listen(this.vslider_, goog.ui.Component.EventType.CHANGE, this.handleChange_);
+  if (this.supportHorizontal())
+    this.getHandler().listen(this.hslider_, goog.ui.Component.EventType.CHANGE, this.handleChange_);
   this.setZero();
   this.containerElm_.scrollTop = 0;
 };
@@ -470,10 +484,10 @@ goog.ui.Scroller.prototype.enterDocument = function() {
 /**
  * @param {goog.events.Event} e
  */
-goog.ui.Scroller.prototype.handleChange_ = function (e) {
+goog.ui.Scroller.prototype.handleChange_ = function(e) {
   var slider = e.target;
   if (slider && this.canChangeScroll_) {
-    var orient = slider.getOrientation()  === goog.ui.SliderBase.Orientation.VERTICAL ?
+    var orient = slider.getOrientation() === goog.ui.SliderBase.Orientation.VERTICAL ?
         goog.ui.Scroller.ORIENTATION.VERTICAL : goog.ui.Scroller.ORIENTATION.HORIZONTAL;
     this.adjustScrollTop(orient);
 
@@ -494,7 +508,7 @@ goog.ui.Scroller.prototype.handleChange_ = function (e) {
  * @param {goog.events.KeyEvent} e Key event to handle.
  * @return {boolean}
  */
-goog.ui.Scroller.prototype.handleKeyEventInternal = function (e) {
+goog.ui.Scroller.prototype.handleKeyEventInternal = function(e) {
   var orient = this.orient_;
   var slider;
   if (orient & goog.ui.Scroller.ORIENTATION.VERTICAL) {
@@ -504,7 +518,7 @@ goog.ui.Scroller.prototype.handleKeyEventInternal = function (e) {
   } else if (orient & goog.ui.Scroller.ORIENTATION.BOTH) {
     if (e.keyCode == goog.events.KeyCodes.LEFT ||
         e.keyCode == goog.events.KeyCodes.RIGHT) {
-      slider = this.hslider_;    
+      slider = this.hslider_;
     } else {
       slider = this.vslider_;
     }
@@ -531,8 +545,8 @@ goog.ui.Scroller.Slider = function (upsidedown, opt_domHelper) {
 goog.inherits(goog.ui.Scroller.Slider, goog.ui.SliderBase);
 
 
-goog.ui.Scroller.Slider.prototype.CssBase_ = 'goog-scroller-bar'; 
-  
+goog.ui.Scroller.Slider.prototype.CssBase_ = 'goog-scroller-bar';
+
 
 goog.ui.Scroller.Slider.prototype.upsidedown_ = false;
 
