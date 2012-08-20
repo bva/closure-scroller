@@ -258,9 +258,7 @@ goog.ui.Scroller.prototype.update_ = function () {
     this.adjustUnitIncrement_(goog.ui.Scroller.ORIENTATION.HORIZONTAL);
   }
 
-  // XXX: Because the method accepts only one argument,
-  //        we calc isOrientEnabled again inside of this method.
-  this.setEnabled(venable || henable);
+  this.setScrollbarsEnabled_(this.isEnabled() && (venable || henable));
 };
 
 
@@ -297,10 +295,19 @@ goog.ui.Scroller.prototype.getScrollWidth = function () {
 
 /**
  * @override
- * @param {boolean} enable
  */
 goog.ui.Scroller.prototype.setEnabled = function (enable) {
   goog.base(this, 'setEnabled', enable);
+
+  this.setScrollbarsEnabled_(enable);
+};
+
+
+/**
+ * @param {boolean} enable Scrollbars enablement.
+ * @private
+ */
+goog.ui.Scroller.prototype.setScrollbarsEnabled_ = function(enable) {
   this.setMouseWheelEnable_(enable);
 
   var venable = this.isOrientEnabled(goog.ui.Scroller.ORIENTATION.VERTICAL);
