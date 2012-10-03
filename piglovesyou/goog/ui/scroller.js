@@ -5,6 +5,7 @@ goog.require('goog.ui.Control');
 goog.require('goog.ui.Slider');
 
 
+
 /**
  * @constructor
  * @param {?goog.ui.Scroller.ORIENTATION=} opt_orient Optional orientation.
@@ -223,7 +224,52 @@ goog.ui.Scroller.prototype.canDecorate = function(element) {
 
 
 /**
- * @return {Number}
+ * Sets scroller to show only when mouse enters scroller area.
+ * @param {boolean} show Should scrooler be showed only on hover?
+ */
+goog.ui.Scroller.prototype.setShowOnHover = function(show) {
+  var el = this.getElement();
+  var ENTER = goog.ui.Component.EventType.ENTER;
+  var LEAVE = goog.ui.Component.EventType.LEAVE;
+
+  var handler = this.getHandler();
+
+  if (show) {
+    handler.listen(this, ENTER, this.enter_);
+    handler.listen(this, LEAVE, this.leave_);
+  } else {
+    handler.unlisten(this, ENTER, this.enter_);
+    handler.unlisten(this, LEAVE, this.leave_);
+  }
+};
+
+
+/**
+ * Handle ENTER event
+ * @param {goog.events.Event} e Event.
+ * @private
+ */
+goog.ui.Scroller.prototype.enter_ = function(e) {
+  if (!this.isEnabled()) {
+    this.setEnabled(true);
+  }
+};
+
+
+/**
+ * Handle LEAVE event.
+ * @param {goog.events.Event} e Event.
+ * @private
+ */
+goog.ui.Scroller.prototype.leave_ = function(e) {
+  if (this.isEnabled()) {
+    this.setEnabled(false);
+  }
+};
+
+
+/**
+ * @return {Number} Height.
  */
 goog.ui.Scroller.prototype.getHeight = function() {
   return this.height_;
@@ -231,7 +277,7 @@ goog.ui.Scroller.prototype.getHeight = function() {
 
 
 /**
- * @return {Number}
+ * @return {Number} Width.
  */
 goog.ui.Scroller.prototype.getWidth = function() {
   return this.width_;
