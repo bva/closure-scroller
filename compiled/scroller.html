@@ -1,25 +1,9 @@
-<!--
- * @license
- * Copyright (c) 2012 Soichi Takamura (http://stakam.net/)
- *
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- -->
-
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>goog.ui.Scroller</title>
-  <link rel="stylesheet" href="../css/scroller.css" />
-
-  <script src="../../../closure-library-read-only/closure/goog/base.js"></script>
-  <script type="text/javascript">
-    goog.require('goog.ui.Control');
-    goog.require('goog.ui.Slider');
-  </script>
-  <script src="../ui/scroller.js"></script>
+  <link rel="stylesheet" href="../piglovesyou/goog/css/scroller.css" />
 
   <style type="text/css">
     #my-vscroller {
@@ -180,45 +164,9 @@
     </tr>
   </table>
 
-
+  <script src="./min.js"></script>
   <script>
-    var vscroller = new goog.ui.Scroller;
-    var elm = goog.dom.getElement('my-vscroller');
-    vscroller.decorate(elm);
-    var vbutton = goog.dom.getElement('vdecrementButton');
-    vbutton.removeAttribute('disabled');
-    goog.events.listen(vbutton, 'click', goog.bind(decrement, null, vscroller));
-
-    var hscroller = new goog.ui.Scroller(goog.ui.Scroller.ORIENTATION.HORIZONTAL);
-    var elm = goog.dom.getElement('my-hscroller');
-    hscroller.decorate(elm);
-    var hbutton = goog.dom.getElement('hdecrementButton');
-    hbutton.removeAttribute('disabled');
-    goog.events.listen(hbutton, 'click', goog.bind(decrement, null, hscroller));
-
-    var bscroller = new goog.ui.Scroller(goog.ui.Scroller.ORIENTATION.BOTH);
-    var elm = goog.dom.getElement('my-bscroller');
-    bscroller.decorate(elm);
-    var bbutton = goog.dom.getElement('bdecrementButton');
-    bbutton.removeAttribute('disabled');
-    goog.events.listen(bbutton, 'click', goog.bind(decrement, null, bscroller));
-
-    function decrement (scroller, e) {
-      var container = scroller.getContentElement()
-      var item = goog.dom.getLastElementChild(container);
-      if (item) {
-        goog.dom.removeNode(item);
-        scroller.update();
-        // br
-        var br = goog.dom.getLastElementChild(container);
-        if (br && br.nodeName == goog.dom.TagName.BR) goog.dom.removeNode(br);
-        if (goog.dom.getChildren(container).length == 0) {
-          var buttonElm = e.target;
-          buttonElm.setAttribute('disabled', 'disabled');
-          goog.events.unlisten(buttonElm, 'click', decrement);
-        }
-      }
-    }
+    my.app();
   </script>
 
 </body>
